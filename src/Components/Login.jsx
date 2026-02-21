@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
   const [secret, setSecret] = useState("");
   const handleLogin = async () => {
     const response = await fetch(
@@ -11,13 +12,13 @@ export default function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ secret }),
+        body: JSON.stringify({ email, secret }),
       },
     );
 
     const data = await response.json();
     console.log(data);
-    localStorage.setItem("adminToken", data.token)
+    localStorage.setItem("adminToken", data.token);
   };
   return (
     <>
@@ -53,6 +54,8 @@ export default function Login() {
                 id="Email"
                 className="form-control py-2"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
