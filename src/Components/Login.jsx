@@ -2,7 +2,23 @@ import { useState } from "react";
 import { Mail, Lock } from "lucide-react";
 
 export default function Login() {
-  const [secret, setSecret] = useState('')
+  const [secret, setSecret] = useState("");
+  const handleLogin = async () => {
+    const response = await fetch(
+      "https://crew-control-qgb84kx8j-soudip-panjas-projects.vercel.app/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ secret }),
+      },
+    );
+
+    const data = await response.json();
+    console.log(data);
+    localStorage.setItem("adminToken", data.token)
+  };
   return (
     <>
       <div
@@ -54,6 +70,8 @@ export default function Login() {
                 id="Password"
                 className="form-control py-2"
                 placeholder="Password"
+                value={secret}
+                onChange={(e) => setSecret(e.target.value)}
               />
             </div>
           </div>
@@ -75,6 +93,8 @@ export default function Login() {
                 <button
                   className="btn w-100 text-white fw-semibold"
                   style={{ backgroundColor: "#6f42c1" }}
+                  onClick={handleLogin}
+                  type="button"
                 >
                   Login
                 </button>
